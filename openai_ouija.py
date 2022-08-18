@@ -9,8 +9,53 @@ from PIL import ImageTk, Image
 
 user = "Person:"
 ai = "Geist:"
-openai.api_key = "YOUR_OPENAI_API_KEY"
-prompt_text = "EXAMPLE PROMPT FOR A GHOST"
+openai.api_key = "YOUR_OPENAI_API_KEY" 
+prompt_text = "YOUR_GHOST_PROMPT_TEXT"
+
+# Key: Character (char), Value: Position (Tuple)
+
+characters = {'A': (142, 386),
+              'Ä': (142, 386),
+              'B': (230, 339),
+              'C': (313, 310),
+              'D': (394, 285),
+              'E': (475, 269),
+              'F': (558, 260),
+              'G': (630, 257),
+              'H': (721, 258),
+              'I': (795, 269),
+              'J': (855, 277),
+              'K': (941, 304),
+              'L': (1031, 334),
+              'M': (1112, 371),
+              'N': (163, 545),
+              'O': (231, 495),
+              'Ö': (231, 495),
+              'P': (303, 452),
+              'Q': (376, 423),
+              'R': (460, 401),
+              'S': (543, 382),
+              'T': (621, 377),
+              'U': (706, 379),
+              'Ü': (706, 379),
+              'V': (792, 384),
+              'W': (884, 416),
+              'X': (977, 453),
+              'Y': (1050, 491),
+              'Z': (1120, 539),
+              '1': (291, 611),
+              '2': (350, 614),
+              '3': (428, 614),
+              '4': (506, 614),
+              '5': (588, 616),
+              '6': (668, 614),
+              '7': (747, 615),
+              '8': (824, 616),
+              '9': (905, 615),
+              '0': (985, 610)}
+
+x = 0
+y = +35
 
 
 class Ouija_Board:
@@ -18,9 +63,6 @@ class Ouija_Board:
     def __init__(self):
 
         self.temporary_pointer = None
-
-        self.x = 0
-        self.y = +35
 
         # Create Window
 
@@ -49,56 +91,16 @@ class Ouija_Board:
         # Resizable false
         self.root.resizable(False, False)
 
-        # Key: Character (char), Value: Position (Tuple)
-
-        self.characters = {'A': (142+self.x, 386+self.y),
-                           'Ä': (142 + self.x, 386 + self.y),
-                           'B': (230+self.x, 339+self.y),
-                           'C': (313+self.x, 310+self.y),
-                           'D': (394+self.x, 285+self.y),
-                           'E': (475+self.x, 269+self.y),
-                           'F': (558+self.x, 260+self.y),
-                           'G': (630+self.x, 257+self.y),
-                           'H': (721+self.x, 258+self.y),
-                           'I': (795+self.x, 269+self.y),
-                           'J': (855+self.x, 277+self.y),
-                           'K': (941+self.x, 304+self.y),
-                           'L': (1031+self.x, 334+self.y),
-                           'M': (1112+self.x, 371+self.y),
-                           'N': (163+self.x, 545+self.y),
-                           'O': (231+self.x, 495+self.y),
-                           'Ö': (231 + self.x, 495 + self.y),
-                           'P': (303+self.x, 452+self.y),
-                           'Q': (376+self.x, 423+self.y),
-                           'R': (460+self.x, 401+self.y),
-                           'S': (543+self.x, 382+self.y),
-                           'T': (621+self.x, 377+self.y),
-                           'U': (706+self.x, 379+self.y),
-                           'Ü': (706+self.x, 379+self.y),
-                           'V': (792+self.x, 384+self.y),
-                           'W': (884+self.x, 416+self.y),
-                           'X': (977+self.x, 453+self.y),
-                           'Y': (1050+self.x, 491+self.y),
-                           'Z': (1120+self.x, 539+self.y),
-                           '1': (291+self.x, 611+self.y),
-                           '2': (350+self.x, 614+self.y),
-                           '3': (428+self.x, 614+self.y),
-                           '4': (506+self.x, 614+self.y),
-                           '5': (588+self.x, 616+self.y),
-                           '6': (668+self.x, 614+self.y),
-                           '7': (747+self.x, 615+self.y),
-                           '8': (824+self.x, 616+self.y),
-                           '9': (905+self.x, 615+self.y),
-                           '0': (985+self.x, 610+self.y)}
-
         # self.characters['A'][0] -> x-Koordinate von A
 
     def move_pointer(self, text):
         self.canvas.delete(self.zeiger)
         for char in text:
             char = char.upper()
-            if char in self.characters.keys():
-                self.temporary_pointer = self.canvas.create_image(self.characters[char][0], self.characters[char][1], image=self.zeiger_image)
+            if char in characters.keys():
+                self.temporary_pointer = self.canvas.create_image(characters[char][0] + x,
+                                                                  characters[char][1] + y,
+                                                                  image=self.zeiger_image)
                 # print("Char: " + char + " X: " + str(self.characters[char][0]) + " Y: " + str(self.characters[char][1])) Prints out info about the current character
                 time.sleep(1)
                 self.canvas.delete(self.temporary_pointer)
@@ -172,7 +174,6 @@ class MicrophoneListener(threading.Thread):
 
 
 if __name__ == '__main__':
-
     ouija_board = Ouija_Board()
 
     thread = MicrophoneListener(ouija_board)
